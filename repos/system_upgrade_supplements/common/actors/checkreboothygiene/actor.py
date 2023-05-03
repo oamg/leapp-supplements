@@ -1,9 +1,7 @@
 from leapp.actors import Actor
 from leapp.libraries.actor import checkreboothygiene
 from leapp.reporting import Report
-# from leapp.tags import ChecksPhaseTag
 from leapp.tags import ChecksPhaseTag, IPUWorkflowTag
-from leapp.models import InstalledRedHatSignedRPM
 
 
 class CheckRebootHygiene(Actor):
@@ -21,7 +19,7 @@ class CheckRebootHygiene(Actor):
     name = "check_reboot_hygiene"
     consumes = ()
     produces = (Report,)
-    tags = (ChecksPhaseTag,)
+    tags = (ChecksPhaseTag, IPUWorkflowTag)
 
     def process(self):
         self.log.info("Checking reboot hygiene")
