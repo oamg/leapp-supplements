@@ -53,17 +53,19 @@ def test_mismatched_kernel_versions(booted_kernel, default_kernel, inhibit, monk
 
 
 @pytest.mark.parametrize(
-    "uptime_seconds, since_modified_seconds, inhibit",
+    "boot_files, uptime_seconds, since_modified_seconds, inhibit",
     (
-        (0, 1, False),
-        (0, 3600, False),
-        (3600, 0, True),
-        (3601, 3600, True),
+        (["file1", "file2"], 0, 1, False),
+        (["file1", "file2"], 0, 3600, False),
+        (["file1", "file2"], 3600, 0, True),
+        (["file1", "file2"], 3601, 3600, True),
+        (["initramfs-3.10.0-1160.90.1.el7.x86_64kdump.img", "knother.kdump.img"], 0, 3600, False),
+        (["initramfs-3.10.0-1160.90.1.el7.x86_64kdump.img", "another.kdump.img"], 3600, 0, False),
     ),
 )
-def test_modified_boot_files(uptime_seconds, since_modified_seconds, inhibit, monkeypatch):
+def test_modified_boot_files(boot_files, uptime_seconds, since_modified_seconds, inhibit, monkeypatch):
     monkeypatch.setattr(reporting, "create_report", create_report_mocked())
-    monkeypatch.setattr(os, "walk", lambda _: [("/boot", [], ["file1", "file2"])])
+    monkeypatch.setattr(os, "walk", lambda _: [("/boot", [], boot_files)])
     monkeypatch.setattr(os.path, "isfile", lambda _: True)
 
     monkeypatch.setattr(checkreboothygiene, "_get_uptime", lambda: uptime_seconds)
