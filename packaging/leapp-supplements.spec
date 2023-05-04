@@ -11,7 +11,7 @@ Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Custom actors for the Leapp project
 
-License:        MIT
+License:        ASL 2.0
 URL:            https://github.com/oamg/%{pkgname}
 Source0:        %{pkgname}-%{version}.tar.gz
 
