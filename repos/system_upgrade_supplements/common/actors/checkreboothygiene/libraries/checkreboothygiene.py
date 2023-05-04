@@ -5,16 +5,18 @@ from leapp import reporting
 from leapp.exceptions import StopActorExecutionError
 from leapp.libraries.common import config
 from leapp.libraries.stdlib import CalledProcessError, api, run
+from leapp.libraries.common import config
 
+
+DEFAULT_EXCESSIVE_UPTIME_LIMIT_DAYS = 30
 DAY_IN_SECONDS = 24 * 60 * 60
-# TODO: can this be parametrized? (Makefile)
-EXCESSIVE_UPTIME_LIMIT_DAYS = 30
-EXCESSIVE_UPTIME_LIMIT_SECONDS = EXCESSIVE_UPTIME_LIMIT_DAYS * DAY_IN_SECONDS
-
 FMT_LIST_SEPARATOR = "\n    - "
+
 
 def check_excessive_uptime():
     uptime_seconds = _get_uptime()
+    EXCESSIVE_UPTIME_LIMIT_DAYS = _get_excessive_uptime_limit_days()
+    EXCESSIVE_UPTIME_LIMIT_SECONDS = EXCESSIVE_UPTIME_LIMIT_DAYS * DAY_IN_SECONDS
 
     if uptime_seconds > EXCESSIVE_UPTIME_LIMIT_SECONDS:
         summary = (
@@ -31,6 +33,10 @@ def check_excessive_uptime():
             reporting.Remediation(hint="Please reboot the host machine."),
         ]
         reporting.create_report(report)
+
+
+def _get_excessive_uptime_limit_days():
+    return config.get_env("LEAPP_EXCESSIVE_UPTIME_LIMIT_DAYS", DEFAULT_EXCESSIVE_UPTIME_LIMIT_DAYS)
 
 
 def _get_uptime():
@@ -99,8 +105,9 @@ def check_modified_boot_files():
             "Some files on the /boot partition have been modified since the last reboot. "
             "To reduce the risk of boot issues related to changes made since the last reboot, "
             "policy requires the host to be rebooted before going forward with the upgrade."
-            "The following files have been modified:{}{}"
-            .format(FMT_LIST_SEPARATOR, FMT_LIST_SEPARATOR.join(sorted_boot_files))
+            "The following files have been modified:{}{}".format(
+                FMT_LIST_SEPARATOR, FMT_LIST_SEPARATOR.join(sorted_boot_files)
+            )
         )
 
         boot_files_related = [reporting.RelatedResource("file", f) for f in sorted_boot_files]

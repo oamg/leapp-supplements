@@ -5,10 +5,12 @@ import mock
 import pytest
 from leapp import reporting
 from leapp.libraries.actor import checkreboothygiene
-from leapp.libraries.actor.checkreboothygiene import EXCESSIVE_UPTIME_LIMIT_SECONDS
+from leapp.libraries.actor.checkreboothygiene import DAY_IN_SECONDS, DEFAULT_EXCESSIVE_UPTIME_LIMIT_DAYS
 from leapp.libraries.common.testutils import create_report_mocked, CurrentActorMocked
 from leapp.utils.report import is_inhibitor
 from leapp.libraries.stdlib import api
+from leapp.libraries.common import config
+
 
 KERNEL_VERSION_1 = "3.10.0-1062.1.2.el7.x86_64"
 KERNEL_VERSION_2 = "3.10.0-1160.88.1.el7.x86_64"
@@ -26,12 +28,13 @@ def assert_inhibitor(should_inhibit):
     "uptime, inhibit",
     (
         (0, False),
-        (EXCESSIVE_UPTIME_LIMIT_SECONDS, False),
-        (EXCESSIVE_UPTIME_LIMIT_SECONDS + 1, True),
+        (DEFAULT_EXCESSIVE_UPTIME_LIMIT_DAYS * DAY_IN_SECONDS, False),
+        (DEFAULT_EXCESSIVE_UPTIME_LIMIT_DAYS * DAY_IN_SECONDS + 1, True),
     ),
 )
 def test_excessive_uptime(uptime, inhibit, monkeypatch):
     monkeypatch.setattr(reporting, "create_report", create_report_mocked())
+    monkeypatch.setattr(config, "get_env", lambda x, y: y)
     monkeypatch.setattr(checkreboothygiene, "_get_uptime", lambda: uptime)
     checkreboothygiene.check_excessive_uptime()
     assert_inhibitor(inhibit)
