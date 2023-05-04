@@ -1,5 +1,6 @@
 import os
 import time
+import fnmatch
 
 from leapp import reporting
 from leapp.exceptions import StopActorExecutionError
@@ -80,11 +81,18 @@ def check_mismatched_kernel_versions():
 
 
 def check_modified_boot_files():
+    """
+    Check for modified files on the /boot partition since the last reboot.
+
+    *kdump.img files are excluded from the check, see https://github.com/oamg/leapp-supplements/issues/3
+    for more details.
+    """
     boot_files = []
     for root, _, files in os.walk("/boot"):
         for file in files:
             file_path = os.path.join(root, file)
-            if os.path.isfile(file_path):
+            # We don't want to include the kdump file in the list of boot files
+            if os.path.isfile(file_path) and not fnmatch.fnmatch(file, "*kdump.img"):
                 boot_files.append(file_path)
 
     modified_boot_files = []
