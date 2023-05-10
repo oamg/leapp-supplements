@@ -9,6 +9,8 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+packaging/*/
+*.rpm
 .Python
 build/
 develop-eggs/
@@ -32,7 +34,6 @@ MANIFEST
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
-*.spec
 
 # Installer logs
 pip-log.txt
