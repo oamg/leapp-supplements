@@ -110,4 +110,4 @@ For more information on using Leapp and performing in-place upgrades, please ref
 
 Section containing details about how to contribute to the project.
 
-Before writing any code, familiarize yourself with the [Leapp project documentation](https://leapp.readthedocs.io/en/latest/). The section — [Creating your first actor](https://leapp.readthedocs.io/en/latest/first-actor.html) — is a good place to start.
+Before writing any code, familiarize yourself with the [Leapp project documentation](https://leapp.readthedocs.io/en/latest/). The section [Creating your first actor](https://leapp.readthedocs.io/en/latest/first-actor.html) is a good place to start. You should also dig around the [Leapp Dashboard](https://oamg.github.io/leapp-dashboard/#/) to make sure the custom actor functionality you are considering doesn't already exist in the mainstream framework.
