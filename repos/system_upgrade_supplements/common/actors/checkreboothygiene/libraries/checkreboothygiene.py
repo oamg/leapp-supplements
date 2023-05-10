@@ -84,6 +84,8 @@ def check_modified_boot_files():
     """
     Check for modified files on the /boot partition since the last reboot.
 
+    grubenv file is excluded as per https://access.redhat.com/solutions/6765351
+
     *kdump.img files are excluded from the check, see https://github.com/oamg/leapp-supplements/issues/3
     for more details.
     """
@@ -91,8 +93,10 @@ def check_modified_boot_files():
     for root, _, files in os.walk("/boot"):
         for file in files:
             file_path = os.path.join(root, file)
-            # We don't want to include the kdump file in the list of boot files
-            if os.path.isfile(file_path) and not fnmatch.fnmatch(file, "*kdump.img"):
+            # We don't want to include the grubenv or kdump files in the list of boot files
+            if (os.path.isfile(file_path) and
+                    not fnmatch.fnmatch(file, "*/grubenv") and
+                    not fnmatch.fnmatch(file, "*kdump.img")):
                 boot_files.append(file_path)
 
     modified_boot_files = []
