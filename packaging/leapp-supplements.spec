@@ -51,6 +51,9 @@ install -m 0755 -d %{buildroot}%{supplementsdir}
 install -m 0755 -d %{buildroot}%{_sysconfdir}/leapp/repos.d/
 cp -r repos/%{supplementsdir_name}/* %{buildroot}%{supplementsdir}
 
+# Change excessive uptime limit for checkreboothygiene actor if it was parameterized
+sed -i "s/\(EXCESSIVE_UPTIME_LIMIT_DAYS = \).*/\1%{excessive_uptime_limit_days}/" %{buildroot}%{supplementsdir}/common/actors/checkreboothygiene/libraries/checkreboothygiene.py
+
 # Remove irrelevant repositories - We don't want to ship them for the particular RHEL version
 %if 0%{?rhel} == 7
 rm -rf %{buildroot}%{supplementsdir}/el8toel9

@@ -35,6 +35,15 @@ The actor will report inhibitor risk when:
 * The running kernel version does not match the default kernel version configured in the bootloader.
 * Any files are found under /boot that have been modified since the last reboot.
 
+**Parameterizing excessive uptime limit**
+
+The actor can be parameterized to set the maximum uptime limit in days after which the upgrade is inhibited.
+The default value is 30 days. To change it to 60 days, for example, call the `make rpmbuild` command with the `EXCESSIVE_UPTIME_LIMIT_DAYS` parameter:
+
+```bash
+make rpmbuild EXCESSIVE_UPTIME_LIMIT_DAYS=60
+```
+
 ## Building the Custom Actors RPM
 
 In order to bundle the custom actors from this Git repository, follow the instructions below.

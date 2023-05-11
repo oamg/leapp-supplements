@@ -1,4 +1,5 @@
 DIST_VERSION ?= 7
+EXCESSIVE_UPTIME_LIMIT_DAYS ?= 30
 
 PKGNAME := leapp-supplements
 VERSION=$(shell grep -m1 "^Version:" packaging/$(PKGNAME).spec | grep -om1 "[0-9].[0-9.]*")
@@ -30,7 +31,8 @@ rpmbuild: prepare
 		--define "rhel $(DIST_VERSION)" \
 		--define "nextrhel $$(($(DIST_VERSION) + 1))" \
 		--define "dist .el$(DIST_VERSION)" \
-		--define "actors_to_install $(ACTORS_TO_INSTALL)"
+		--define "actors_to_install $(ACTORS_TO_INSTALL)" \
+		--define "excessive_uptime_limit_days $(EXCESSIVE_UPTIME_LIMIT_DAYS)"
 	cp packaging/RPMS/*/*.rpm .
 	cp packaging/SRPMS/*.rpm .
 
