@@ -1,0 +1,17 @@
+FROM registry.access.redhat.com/ubi7/ubi:7.9
+
+RUN yum update -y && \
+    yum install -y python-setuptools make git rsync
+
+# see ./Containerfile.ubi7 for explanation
+RUN yum -y install python27-python-pip && \
+    scl enable python27 -- pip install -U --target /usr/lib/python2.7/site-packages/ pip==20.3.0 && \
+    python -m pip install --ignore-installed pip==20.3.4 ipaddress
+
+ENV PYTHON_VENV python2.7
+
+COPY requirements.txt /tmp/requirements.txt
+
+RUN pip install -U pip && \
+	pip install --upgrade setuptools && \
+	pip install --upgrade -r /tmp/requirements.txt
