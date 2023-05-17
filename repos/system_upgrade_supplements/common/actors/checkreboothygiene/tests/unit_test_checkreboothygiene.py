@@ -16,7 +16,7 @@ KERNEL_VERSION_2 = "3.10.0-1160.88.1.el7.x86_64"
 
 def assert_inhibitor(should_inhibit):
     if should_inhibit:
-        reporting.create_report.called
+        assert reporting.create_report.called
         assert is_inhibitor(reporting.create_report.report_fields)
     else:
         assert not reporting.create_report.called

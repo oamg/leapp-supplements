@@ -3,8 +3,6 @@ import time
 import fnmatch
 
 from leapp import reporting
-from leapp.exceptions import StopActorExecutionError
-from leapp.libraries.common import config
 from leapp.libraries.stdlib import CalledProcessError, api, run
 
 DAY_IN_SECONDS = 24 * 60 * 60
@@ -14,6 +12,7 @@ EXCESSIVE_UPTIME_LIMIT_DAYS = 30
 EXCESSIVE_UPTIME_LIMIT_SECONDS = EXCESSIVE_UPTIME_LIMIT_DAYS * DAY_IN_SECONDS
 
 FMT_LIST_SEPARATOR = "\n    - "
+
 
 def check_excessive_uptime():
     uptime_seconds = _get_uptime()
@@ -92,19 +91,19 @@ def check_modified_boot_files():
     """
     boot_files = []
     for root, _, files in os.walk("/boot"):
-        for file in files:
-            file_path = os.path.join(root, file)
+        for f in files:
+            file_path = os.path.join(root, f)
             # We don't want to include the grubenv or kdump files in the list of boot files
             if (os.path.isfile(file_path) and
-                    not fnmatch.fnmatch(file, "*/grubenv") and
-                    not fnmatch.fnmatch(file, "*kdump.img")):
+                    not fnmatch.fnmatch(f, "*/grubenv") and
+                    not fnmatch.fnmatch(f, "*kdump.img")):
                 boot_files.append(file_path)
 
     modified_boot_files = []
     uptime_seconds = _get_uptime()
-    for file in boot_files:
-        if os.stat(file).st_mtime > time.time() - uptime_seconds:
-            modified_boot_files.append(file)
+    for f in boot_files:
+        if os.stat(f).st_mtime > time.time() - uptime_seconds:
+            modified_boot_files.append(f)
 
     if modified_boot_files:
         sorted_boot_files = sorted(modified_boot_files)
