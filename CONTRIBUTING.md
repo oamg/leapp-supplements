@@ -41,7 +41,7 @@ pip install strato-skipper
 ```
 
 #### Running the containerized tests
-The [Makefile](./Makefile) includes targets for running the tests inside the container. Each simple target has equivilant targets with a suffix of the environment, such as `test-rhel8` or `lint-rhel7`:
+The [Makefile](./Makefile) includes targets for running the tests inside the container. Each simple target has equivalent targets with a suffix of the environment, such as `test-rhel8` or `lint-rhel7`:
 ```bash
 make test-rhel8
 ```
