@@ -84,7 +84,7 @@ $2-$1:
 
 endef
 
-MAKE_RULES := test lint pytest
+MAKE_RULES := test lint pytest codespell
 
 $(foreach d, $(DISTROS), \
 	$(eval $(call shell_rules,$d)))
@@ -114,6 +114,9 @@ ifdef REPORT
 	REPORT_ARG=--junit-xml=$(REPORT)
 endif
 
+codespell:
+	codespell --skip=./.git/*,*.pyc,leapp.db
+
 lint:
 	echo $()
 	echo "--- Linting ... ---" && \
@@ -142,4 +145,4 @@ pytest: /tmp/leapp-repository conftest.py
 	snactor repo find --path repos/; \
 	$(_PYTHON_VENV) -m pytest $(REPORT_ARG) $(TEST_PATHS) $(LIBRARY_PATH)
 
-test: lint pytest
+test: codespell lint pytest
