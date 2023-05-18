@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Check for pylint and flake errors
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenarios:
+        - name: Run linters on RHEL7
+          distro: rhel7
+        - name: Run linters on RHEL8
+          distro: rhel8
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install strato-skipper
+      - name: ${{matrix.scenarios.name}}
+        run: |
+          make lint-${{matrix.scenarios.distro}}
