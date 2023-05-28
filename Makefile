@@ -65,6 +65,7 @@ clean:
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 
+MAKER?=make
 DISTROS := $(patsubst skipper-%,%,$(basename $(wildcard skipper-*.yaml)))
 ACTIONS := shell test
 
@@ -80,7 +81,7 @@ endef
 # $2 == make target
 define make_rules
 $2-$1:
-	@SKIPPER_CONF=${PWD}/skipper-$1.yaml skipper make $2
+	@SKIPPER_CONF=${PWD}/skipper-$1.yaml skipper $(MAKER) $2
 
 endef
 
@@ -92,6 +93,10 @@ $(foreach d, $(DISTROS), \
 $(foreach d, $(DISTROS), \
 	$(foreach m, $(MAKE_RULES), \
 	$(eval $(call make_rules,$d,$m))))
+
+test-all:
+	for d in $(DISTROS); do $(MAKER) test-$$d; done
+
 
 REPOS_PATH=repos
 _SYSUPGSUP_REPOS="$(REPOS_PATH)/system_upgrade_supplements"
