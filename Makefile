@@ -143,6 +143,6 @@ conftest.py: /tmp/leapp-repository
 pytest: /tmp/leapp-repository conftest.py
 	snactor repo find --path /tmp/leapp-repository/repos/; \
 	snactor repo find --path repos/; \
-	$(_PYTHON_VENV) -m pytest $(REPORT_ARG) $(TEST_PATHS) $(LIBRARY_PATH)
+	$(_PYTHON_VENV) -m pytest --cov --cov-report=html $(REPORT_ARG) $(TEST_PATHS) $(LIBRARY_PATH)
 
 test: codespell lint pytest
