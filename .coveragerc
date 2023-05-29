@@ -1,0 +1,6 @@
+[run]
+omit = *test*.py
+source = repos
+
+[report]
+fail_under=75
