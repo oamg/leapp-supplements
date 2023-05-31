@@ -15,6 +15,7 @@ help:
 	@echo "  lint         : Run pylint and flake8"
 	@echo "  pytest       : Run pytest"
 	@echo "  test         : Run all tests (lint and pytest)"
+	@echo "  codespell"   : Run codespell tests
 	@echo "  shell-<env>" : Start and enter a container with the provided environment
 	@echo "  rpmbuild     : Build RPM packages of the custom actors"
 	@echo "  tarball      : Create a tarball of the source code from the current git HEAD"
@@ -120,7 +121,7 @@ ifdef REPORT
 endif
 
 codespell:
-	codespell --skip=./.git/*,*.pyc,leapp.db
+	codespell --skip=./.git/*,*.pyc,leapp.db,./htmlcov/* --ignore-words-list=subprocess\'
 
 lint:
 	echo $()
