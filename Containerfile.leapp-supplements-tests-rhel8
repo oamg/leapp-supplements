@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest
 
 RUN dnf update -y && \
-    dnf install -y python3-setuptools python3-pip make git rsync findutils gcc
+    dnf install -y python3-setuptools python3-pip make git rsync findutils gcc python3-requests
 
 ENV PYTHON_VENV python3.6
 
