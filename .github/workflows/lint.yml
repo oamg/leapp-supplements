@@ -20,6 +20,8 @@ jobs:
           distro: rhel7
         - name: Run linters on RHEL8
           distro: rhel8
+        - name: Run linters on RHEL9
+          distro: rhel9
 
     steps:
       - name: Checkout the code
