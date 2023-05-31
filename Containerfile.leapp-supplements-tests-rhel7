@@ -4,7 +4,7 @@ RUN yum update -y && \
     yum install -y python-setuptools make git rsync
 
 # see ./Containerfile.ubi7 for explanation
-RUN yum -y install python27-python-pip && \
+RUN yum -y install python27-python-pip python2-requests && \
     scl enable python27 -- pip install -U --target /usr/lib/python2.7/site-packages/ pip==20.3.0 && \
     python -m pip install --ignore-installed pip==20.3.4 ipaddress
 
