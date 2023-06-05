@@ -33,3 +33,17 @@ jobs:
       - name: ${{matrix.scenarios.name}}
         run: |
           make pytest-${{matrix.scenarios.distro}}
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@v2
+        with:
+          flag-name: ${{matrix.scenarios.distro}}
+          parallel: true
+  coverage:
+    needs: pytest
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        parallel-finished: true
