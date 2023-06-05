@@ -65,6 +65,10 @@ clean:
 	find . -name '__pycache__' -exec rm -fr {} +
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
+	rm -rf /tmp/leapp-repository
+	rm -f conftest.py
+	rm -rf htmlcov
+	rm -f .coverage
 
 MAKER?=make
 DISTROS := $(patsubst skipper-%,%,$(basename $(wildcard skipper-*.yaml)))
