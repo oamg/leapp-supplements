@@ -1,7 +1,15 @@
 FROM registry.access.redhat.com/ubi7/ubi:7.9
 
+# Installing elfutils and rpm-build directly from centos7 repo since they are not available
+# through any of the ubi7 repos
 RUN yum update -y && \
-    yum install -y python-setuptools make git rsync
+    yum install -y python-setuptools \
+                   make \
+                   git \
+                   rsync \
+                   http://mirror.centos.org/centos/7/os/x86_64/Packages/elfutils-0.176-5.el7.x86_64.rpm \
+                   http://mirror.centos.org/centos/7/updates/x86_64/Packages/rpm-build-4.11.3-48.el7_9.x86_64.rpm \
+                   python-devel
 
 # see ./Containerfile.ubi7 for explanation
 RUN yum -y install python27-python-pip python2-requests && \

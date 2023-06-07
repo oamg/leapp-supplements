@@ -103,6 +103,12 @@ test-all:
 	for d in $(DISTROS); do $(MAKER) test-$$d; done
 
 
+define rpmbuild_rules
+rpmbuild-rhel$1:
+	@SKIPPER_CONF=${PWD}/skipper-rhel$1.yaml skipper $(MAKER) rpmbuild DIST_VERSION=$1
+endef
+$(foreach v, 7 8, $(eval $(call rpmbuild_rules,$v)))
+
 REPOS_PATH=repos
 _SYSUPGSUP_REPOS="$(REPOS_PATH)/system_upgrade_supplements"
 REPOSITORIES ?= $(shell ls $(_SYSUPGSUP_REPOS) | xargs echo | tr " " ",")
